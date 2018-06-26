@@ -1,0 +1,1 @@
+Basic seed-and-extend DNA sequence read alignment tool.
