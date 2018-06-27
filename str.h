@@ -8,6 +8,7 @@ private:
     const unsigned len = 0;
 public:
     Str(const char* src, unsigned len);
+    ~Str();
     const unsigned length() const { return len; }
     const char& operator[](int i) const;
 
