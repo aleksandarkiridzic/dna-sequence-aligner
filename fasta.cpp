@@ -8,7 +8,7 @@
 
 using namespace std;
 
-Str readFasta(const char* filePath) {
+Str Fasta::read(const char* filePath) {
     ifstream input(filePath);
     if (!input.is_open()) {
         throw FileNotFoundException(filePath);

@@ -3,6 +3,10 @@
 
 #include "str.h"
 
-Str readFasta(const char* filePath);
+// utility class for working with fasta files
+class Fasta {
+public:
+    static Str read(const char* filePath);
+};
 
 #endif // FASTA_H_INCLUDED

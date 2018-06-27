@@ -1,6 +1,7 @@
 #ifndef STR_H_INCLUDED
 #define STR_H_INCLUDED
 
+// basic string structure holding characters and its length
 class Str {
 private:
     const char* chars = nullptr;

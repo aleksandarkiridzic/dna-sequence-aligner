@@ -7,6 +7,7 @@
 
 constexpr unsigned TOTAL_CHARS = 1 << (sizeof(char) * 8);
 
+// utility class for more advanced string functions
 class StrUtil {
 public:
     static void sample(Str& str, unsigned n, std::ostream& os);

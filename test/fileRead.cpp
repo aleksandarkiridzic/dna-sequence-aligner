@@ -8,7 +8,7 @@ using namespace::std;
 
 int main(int argc, char* args[]) {
     try {
-        Str str = readFasta("C:\\Users\\Aleksandar\\Desktop\\genomics\\DNA Sequence Aligner\\data\\MT.fa");
+        Str str = Fasta::read("C:\\Users\\Aleksandar\\Desktop\\genomics\\DNA Sequence Aligner\\data\\MT.fa");
         //Str str = readFasta(args[1]);
         StrUtil::sample(str, 3, cout);
         cout << str.length() << endl;
