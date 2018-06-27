@@ -8,9 +8,9 @@ void StrUtil::sample(Str& str, unsigned n, ostream& os) {
     if (n > (str.len >> 1)) {
         n = str.len / 2;
     }
-    for (unsigned i = 0; i < n; os << str.chars[i++]);
+    for (unsigned i = 0; i < n; os << str[i++]);
     os << "...";
-    os << (str.chars + str.len - n) << str.chars[str.len] - 0 << endl;
+    os << (str.chars + str.len - n) << str[str.len] - 0 << endl;
 }
 
 void StrUtil::histogram(Str& str, ostream& os) {
@@ -87,4 +87,20 @@ inline bool StrUtil::Suffix::operator<(const Suffix& s) const {
 
 inline bool StrUtil::Suffix::operator==(const Suffix& s) const {
     return this->rankHigh == s.rankHigh && this->rankLow == s.rankLow;
+}
+
+Str StrUtil::bwt(Str& str, unsigned*& sufArr) {
+    if (sufArr == nullptr) {    // construct suffix array if it doesn't exist
+        constructSuffixArray(str, sufArr);
+    }
+
+    char* bwt = new char[str.len + 1];
+    for (unsigned i = 0; i <= str.len; i++) {
+        bwt[i] = sufArr[i] ? str[sufArr[i] - 1] : 0;
+    }
+
+    Str bwtStr(bwt, str.len);
+    delete[] bwt;
+
+    return bwtStr;
 }

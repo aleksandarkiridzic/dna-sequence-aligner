@@ -17,6 +17,9 @@ public:
     static void histogram(Str& str, std::ostream& os);
     // create suffix array - O(n * log^2(n))
     static int constructSuffixArray(Str& str, unsigned*& sufArr);
+    // create Burrows–Wheeler transform of a string given its suffix array
+    // if not given, suffix array is created and returned through reference parameter
+    static Str bwt(Str& str, unsigned*& sufArr);
 
 private:
     struct Suffix {

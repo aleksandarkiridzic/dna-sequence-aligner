@@ -22,6 +22,8 @@ Str Fasta::read(const char* filePath) {
         }
     }
 
+    input.close();
+
     string result = iss.str();
     unsigned len = result.length();
     return Str(result.c_str(), len);

@@ -3,6 +3,8 @@
 
 #include <cstring>
 
+using namespace std;
+
 Str::Str(const char* src, unsigned len): len(len) {
     char *dest = new char[len + 1];
     memcpy(dest, src, len + 1);
@@ -20,4 +22,11 @@ const char& Str::operator[](int i) const {
     else {
         return chars[i];
     }
+}
+
+ostream& operator<<(ostream& os, const Str& str) {
+    for (unsigned i = 0; i <= str.len; i++) {
+        os << str.chars[i];
+    }
+    return os;
 }
