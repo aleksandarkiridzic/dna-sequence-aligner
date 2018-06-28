@@ -1,5 +1,6 @@
-#include "../strutil.h"
 #include "../str.h"
+#include "../strutil.h"
+#include "../strfact.h"
 
 #include <iostream>
 #include <cstring>
@@ -11,7 +12,7 @@ void suffixArrayTest() {
     string test = "abracadabra";
     Str str(test.c_str(), test.length());
     unsigned* sufArr;
-    StrUtil::constructSuffixArray(str, sufArr);
+    StrFact::constructSuffixArray(str, sufArr);
     for (unsigned i = 0; i <= str.length(); i++) {
         cout << sufArr[i] << " ";
     }
@@ -19,19 +20,20 @@ void suffixArrayTest() {
 }
 
 void bwtTest() {
-    //string test = "banana";
-    string test = "abracadabra";
+    string test = "ana voli milovana";
+    // string test = "abracadabra";
     Str str(test.c_str(), test.length());
     unsigned* sufArr = nullptr;
-    Str bwtStr = StrUtil::bwt(str, sufArr);
+    Str bwtStr = StrFact::bwt(str, sufArr);
     cout << bwtStr << endl;
     for (unsigned i = 0; i <= str.length(); i++) {
         cout << sufArr[i] << " ";
     }
     cout << endl;
 }
-
+/*
 int main(int argc, char* args[]) {
     // suffixArrayTest();
     bwtTest();
 }
+*/

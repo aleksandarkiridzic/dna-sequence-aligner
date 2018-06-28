@@ -5,31 +5,19 @@
 
 #include <iostream>
 
-constexpr unsigned CHARSIZE_BITS = 8;
-constexpr unsigned TOTAL_CHARS = 1 << (sizeof(char) * CHARSIZE_BITS);
-
 // utility class for more advanced string functions
 class StrUtil {
 public:
     // sample few first and last chars of a string
-    static void sample(Str& str, unsigned n, std::ostream& os);
+    static void sample(const Str& str, unsigned n, std::ostream& os);
+    // count occurrences of all ascii characters
+    static unsigned* count(const Str& str);
     // textual histogram
-    static void histogram(Str& str, std::ostream& os);
-    // create suffix array - O(n * log^2(n))
-    static int constructSuffixArray(Str& str, unsigned*& sufArr);
-    // create Burrows–Wheeler transform of a string given its suffix array
-    // if not given, suffix array is created and returned through reference parameter
-    static Str bwt(Str& str, unsigned*& sufArr);
-
-private:
-    struct Suffix {
-        static unsigned genInd;
-        unsigned index = genInd++;  // index of suffix's first char
-        unsigned rankHigh = 0;      // high priority part of rank
-        unsigned rankLow = 0;       // low priority part of rank
-        bool operator<(const Suffix& s) const;
-        bool operator==(const Suffix& s) const;
-    };
+    static void histogram(const Str& str, std::ostream& os);
+    // check of all chars are uppercase
+    static bool areAllUpper(const Str& str);
+    // print char or its ascii if not printable
+    static std::ostream& printChar(std::ostream& os, char c);
 };
 
 #endif // STRUTIL_H_INCLUDED
