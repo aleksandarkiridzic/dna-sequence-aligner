@@ -5,7 +5,7 @@
 #include <iostream>
 
 using namespace::std;
-
+/*
 int main(int argc, char* args[]) {
     try {
         Str str = Fasta::read("C:\\Users\\Aleksandar\\Desktop\\genomics\\DNA Sequence Aligner\\data\\MT.fa");
@@ -19,5 +19,5 @@ int main(int argc, char* args[]) {
         cout << e.message() << endl;
     }
     return 0;
-}
+}*/
 

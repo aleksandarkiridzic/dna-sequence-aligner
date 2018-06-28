@@ -24,7 +24,7 @@ struct IndexOutOfBoundsException : BetterException {
     IndexOutOfBoundsException(int index, int bound) : index(index), bound(bound) {}
     std::string message() override {
         std::ostringstream output;
-        output << "Index " << index << "out of bounds [0, " << bound << "].";
+        output << "Index " << index << " out of bounds [0, " << bound << "].";
         return output.str();
     }
 };

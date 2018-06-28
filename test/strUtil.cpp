@@ -7,7 +7,7 @@
 
 using namespace::std;
 
-void suffixArrayTest() {
+void constructSuffixArrayTest() {
     //string test = "banana";
     string test = "abracadabra";
     Str str(test.c_str(), test.length());
@@ -33,7 +33,6 @@ void bwtTest() {
 }
 /*
 int main(int argc, char* args[]) {
-    // suffixArrayTest();
-    bwtTest();
-}
-*/
+    constructSuffixArrayTest();
+    // bwtTest();
+}*/

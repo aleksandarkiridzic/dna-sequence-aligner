@@ -38,6 +38,7 @@ const char Str::lastCharVisible() const {
 void Str::destroy() {
     delete[] chars;
     chars = nullptr;
+    len = 0;
 }
 
 ostream& operator<<(ostream& os, const Str& str) {

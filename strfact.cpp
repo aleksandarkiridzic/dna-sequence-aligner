@@ -4,7 +4,7 @@
 
 using namespace std;
 
-int StrFact::constructSuffixArray(Str& str, unsigned*& sufArr) {
+int StrFact::constructSuffixArray(const Str& str, unsigned*& sufArr) {
     sufArr = nullptr;
     unsigned len = str.len;
     if (len < 4) { // short string, sort manually
@@ -12,6 +12,7 @@ int StrFact::constructSuffixArray(Str& str, unsigned*& sufArr) {
     }
 
     Suffix *suffixes = new Suffix[len];
+    Suffix::resetInd();
     for (unsigned i = 0; i < len; i++) {    // initial phase - sort by 2 chars
         suffixes[i].rankHigh = (unsigned char) str.chars[i];
         suffixes[i].rankLow = (unsigned char) str.chars[i + 1];
