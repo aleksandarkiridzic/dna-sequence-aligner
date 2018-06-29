@@ -18,7 +18,7 @@ unsigned* StrUtil::count(const Str& str) {
     for (unsigned i = 0; i < TOTAL_CHARS; i++) {
         cnt[i] = 0;
     }
-    for (unsigned i = 0; i <= str.len; cnt[str.chars[i++]]++);
+    for (unsigned i = 0; i <= str.len; cnt[(byte)str.chars[i++]]++);
 
     return cnt;
 }

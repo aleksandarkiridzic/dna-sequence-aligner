@@ -49,7 +49,7 @@ int StrFact::constructSuffixArray(const Str& str, unsigned*& sufArr) {
     delete[] sufRows;
 
     sufArr = new unsigned[len + 1];
-    for (unsigned i = 1; i <= len; i++) {        // assign index each suffix
+    for (unsigned i = 1; i <= len; i++) {       // assign index each suffix
         sufArr[i] = suffixes[i - 1].index;
     }
     sufArr[0] = len;                            // empty suffix is always first when sorted
@@ -71,6 +71,10 @@ Str StrFact::bwt(Str& str, unsigned*& sufArr, bool keepOriginal) {
 
     Str bwtStr(bwt, str.len);
     delete[] bwt;
+
+    if (!keepOriginal) {
+        str.destroy();
+    }
 
     return bwtStr;
 }
