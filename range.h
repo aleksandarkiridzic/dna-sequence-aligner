@@ -3,10 +3,14 @@
 
 #include <iostream>
 
+#include "general.h"
+
 struct Range {
     unsigned low;
     unsigned high;
     Range(unsigned low, unsigned high);
+    inline bool isEmpty() const { return low >= high; }
+    inline unsigned size() const { return high - low; }
 
     friend std::ostream& operator<<(std::ostream& os, const Range& range);
 };

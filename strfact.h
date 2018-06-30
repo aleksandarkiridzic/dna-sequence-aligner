@@ -2,6 +2,7 @@
 #define STRFACT_H_INCLUDED
 
 #include "str.h"
+#include "fmstr.h"
 
 #include <iostream>
 
@@ -13,6 +14,8 @@ public:
     // create Burrows–Wheeler transform of a string given its suffix array
     // if not given, suffix array is created and returned through reference parameter
     static Str bwt(Str& str, unsigned*& sufArr, bool keepOriginal = true);
+    // create fully fm-indexed string
+    static FMStr constructFMStr(Str& str, unsigned sufArrStep = 1, unsigned checkpointStep = 1);
 
 private:
     struct Suffix {

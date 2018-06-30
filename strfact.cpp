@@ -1,4 +1,6 @@
 #include "strfact.h"
+#include "suffixarray.h"
+#include "checkpoint.h"
 
 #include <algorithm>
 
@@ -77,6 +79,15 @@ Str StrFact::bwt(Str& str, unsigned*& sufArr, bool keepOriginal) {
     }
 
     return bwtStr;
+}
+
+FMStr StrFact::constructFMStr(Str& str, unsigned sufArrStep, unsigned checkpointStep) {
+    SuffixArray sufArr(str, sufArrStep);
+    unsigned *arr = const_cast<unsigned*>(sufArr.arr);
+    Str bwtStr = bwt(str, arr, false);
+    Checkpoint checkpoint(bwtStr, checkpointStep);
+
+    return FMStr(bwtStr, sufArr, checkpoint);
 }
 
 // Suffix struct

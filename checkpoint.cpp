@@ -7,7 +7,7 @@
 
 using namespace std;
 
-Checkpoint::Checkpoint(const FMStr& fmstr, unsigned step): fmstr(fmstr) {
+Checkpoint::Checkpoint(const Str& fmstr, unsigned step): str(str) {
     if (step == 1) {        // not sparse
         logStep = 0;
         sparseMask = 0;
@@ -18,7 +18,7 @@ Checkpoint::Checkpoint(const FMStr& fmstr, unsigned step): fmstr(fmstr) {
     }
 
     int* ch2colInit = new int[TOTAL_CHARS];
-    unsigned* cnt = StrUtil::count(fmstr);
+    unsigned* cnt = StrUtil::count(str);
     for (unsigned i = 0, c = 0; i < TOTAL_CHARS; i++) {
         if (cnt[i]) {
             activeChars++;          // count distinct character in the string
@@ -37,7 +37,7 @@ Checkpoint::Checkpoint(const FMStr& fmstr, unsigned step): fmstr(fmstr) {
             prevHigh += cnt[i];                     // then raise it
         }
     }
-    limitsInit[activeChars] = fmstr.len + 1;
+    limitsInit[activeChars] = str.len + 1;
     limits = limitsInit;
 
     delete[] cnt;
@@ -47,13 +47,13 @@ Checkpoint::Checkpoint(const FMStr& fmstr, unsigned step): fmstr(fmstr) {
     for (unsigned i = 0; i < len; i++) {
         tableInit[i] = new unsigned[activeChars];
     }
-    for (unsigned c = 0; c < fmstr.len; c++) {  // initialize first row
+    for (unsigned c = 0; c < str.len; c++) {  // initialize first row
         tableInit[0][c] = 0;
     }
     for (unsigned i = 1; i < len; i++) {
         memcpy(tableInit + i, tableInit + i - 1, activeChars * sizeof(unsigned));   // copy previous values
         for (unsigned k = (i - 1) << logStep; k < i << logStep; k++) {              // increase for all occurrences
-            tableInit[i][ch2col[(byte)fmstr[k]]]++;                                       // previous and current checkpoint
+            tableInit[i][ch2col[(byte)str[k]]]++;                                       // previous and current checkpoint
         }
     }
     table = const_cast<const unsigned**>(tableInit);
@@ -61,13 +61,13 @@ Checkpoint::Checkpoint(const FMStr& fmstr, unsigned step): fmstr(fmstr) {
 
 Range Checkpoint::range(const Range& range, char ch) const {
     if (ch2col[(byte)ch] == -1) { // no char in string
-        throw NoCharInStrException(ch, fmstr);
+        throw NoCharInStrException(ch, str);
     }
-    if (range.low > fmstr.len) {
-        throw IndexOutOfBoundsException(range.low, fmstr.len);
+    if (range.low > str.len) {
+        throw IndexOutOfBoundsException(range.low, str.len);
     }
-    if (range.high > fmstr.len) {
-        throw IndexOutOfBoundsException(range.high, fmstr.len);
+    if (range.high > str.len) {
+        throw IndexOutOfBoundsException(range.high, str.len);
     }
 
     unsigned low, high;
@@ -76,7 +76,7 @@ Range Checkpoint::range(const Range& range, char ch) const {
     low = table[range.low >> logStep][ch2col[(byte)ch]];
     it = range.low & ~sparseMask;
     while (it <= range.low) {
-        if (fmstr[it++] == ch) {
+        if (str[it++] == ch) {
             low++;
         }
     }
@@ -90,7 +90,7 @@ Range Checkpoint::range(const Range& range, char ch) const {
     }
 
     while (it <= range.high) {
-        if (fmstr[it++] == ch) {
+        if (str[it++] == ch) {
             high++;
         }
     }
@@ -100,10 +100,26 @@ Range Checkpoint::range(const Range& range, char ch) const {
 
 Range Checkpoint::rangeAll(char ch) const {
     if (ch2col[(byte)ch] == -1) { // no char in string
-        throw NoCharInStrException(ch, fmstr);
+        throw NoCharInStrException(ch, str);
     }
 
     return Range(limits[ch2col[byte(ch)]], limits[ch2col[byte(ch)] + 1]);
+}
+
+unsigned Checkpoint::l2f(unsigned index) const {
+    if (index > str.len) {
+        throw IndexOutOfBoundsException(index, str.len);
+    }
+
+    unsigned res = table[index >> logStep][ch2col[(byte)str[index]]];
+    unsigned it = index & ~sparseMask;
+    while (it <= index) {
+        if (str[it++] == str[index]) {
+            res++;
+        }
+    }
+
+    return res;
 }
 
 void Checkpoint::destroy() {

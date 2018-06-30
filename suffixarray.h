@@ -23,7 +23,6 @@ private:
 
     friend std::ostream& operator<<(std::ostream& os, const SuffixArray& sufArr);
     friend class StrFact;
-    friend class FMStr;
 };
 
 #endif // SUFFIXARRAY_H_INCLUDED

@@ -4,12 +4,19 @@
 #include "general.h"
 #include "str.h"
 #include "suffixarray.h"
+#include "checkpoint.h"
 
 immutable_class FMStr : Str {
 private:
-    const bool isPacked;            // is run-length encoded or in raw format
-    const SuffixArray& sufArr;
-    const Checkpoint& Checkpoint;
+    const bool isPacked = false;   // is run-length encoded or in raw format
+    SuffixArray sufArr;            // corresponding suffix array
+    Checkpoint checkpoint;         // corresponding checkpoint tables
+public:
+    // constructed in factory due to preprocessing, here only assigned
+    FMStr(const Str& str, const SuffixArray& sufArr, const Checkpoint& checkpoint);
+    int* allPos(const Str& str) const;
+private:
+    unsigned originalPos(unsigned index) const;   // position of F(index) in the original index
 
     friend class Checkpoint;
 };
