@@ -15,6 +15,7 @@ public:
     // constructed in factory due to preprocessing, here only assigned
     FMStr(const Str& str, const SuffixArray& sufArr, const Checkpoint& checkpoint);
     int* allPos(const Str& str) const;
+    Str inverse() const;
 private:
     unsigned originalPos(unsigned index) const;   // position of F(index) in the original index
 

@@ -24,7 +24,8 @@ void suffixArrayTest() {
         cout << be.message();
     }
 }
-
+/*
 int main(int argc, char* args[]) {
     suffixArrayTest();
 }
+*/

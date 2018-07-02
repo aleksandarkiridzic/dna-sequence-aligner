@@ -29,6 +29,20 @@ int* FMStr::allPos(const Str& str) const {
     return posList;
 }
 
+Str FMStr::inverse() const {
+    char* dest = new char[len + 1];     // of same length as the transform
+
+    unsigned pos = 0;
+    dest[len] = 0;                      // original ends with a 0
+
+    for (int i = len - 1; i >= 0; i--) {
+        dest[i] = chars[pos];
+        pos = checkpoint.l2f(pos);      // find L(pos) in F
+    }
+
+    return Str(dest, len);
+}
+
 unsigned FMStr::originalPos(unsigned index) const {
     int pos = sufArr[index];
     unsigned step = 0;

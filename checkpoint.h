@@ -18,7 +18,7 @@ public:
     ~Checkpoint() { destroy(); };
     Range range(const Range& range, char ch) const; // range in F string of all occurrences of ch in the given range in L string
     Range rangeAll(char ch) const;                  // range in F string of all occurrences of ch
-    unsigned l2f(unsigned index) const;                   // position of L(i) in F
+    unsigned l2f(unsigned index) const;             // position of L(i) in F
     inline unsigned length() const { return (str.len >> logStep) + 1; }
     void destroy();
 private:
