@@ -6,6 +6,8 @@
 #include "suffixarray.h"
 #include "checkpoint.h"
 
+#include <vector>
+
 immutable_class FMStr : public Str {
 private:
     bool isPacked = false;   // is run-length encoded or in raw format
@@ -15,7 +17,7 @@ public:
     // constructed in factory due to preprocessing, here only assigned
     FMStr(const Str& str, const SuffixArray& sufArr, const Checkpoint& checkpoint);
     ~FMStr();
-    int* allPos(const Str& str) const;
+    std::vector<unsigned> allPos(const Str& str) const;
     Str inverse() const;
     void pack();
     void unpack();

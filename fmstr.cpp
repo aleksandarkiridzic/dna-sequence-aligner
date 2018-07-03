@@ -10,9 +10,9 @@ using namespace std;
 FMStr::FMStr(const Str& str, const SuffixArray& sufArr, const Checkpoint& checkpoint):
     Str(str), sufArr(sufArr), checkpoint(checkpoint) {}
 
-int* FMStr::allPos(const Str& str) const {
+vector<unsigned> FMStr::allPos(const Str& str) const {
     if (str.isEmpty()) {
-        return nullptr;         // run only if string is empty
+        return {};         // run only if string is empty
     }
 
     Range range = checkpoint.rangeAll(str[str.length() - 1]);
@@ -21,15 +21,15 @@ int* FMStr::allPos(const Str& str) const {
     }
 
     if (range.isEmpty()) {
-        return nullptr;         // no occurrences
+        return {};         // no occurrences
     }
-    int* posList = new int[range.size() + 1];
-    for (unsigned it = range.low; it < range.high; it++) {
-        posList[it - range.low] = originalPos(range.low);   // locate occurrences
-    }
-    posList[range.size()] = -1;                             // end list with -1
+    vector<unsigned> result(range.size());
 
-    return posList;
+    for (unsigned it = range.low; it < range.high; it++) {
+        result[it - range.low] = originalPos(it);   // locate occurrences
+    }
+
+    return result;
 }
 
 Str FMStr::inverse() const {
@@ -49,13 +49,14 @@ Str FMStr::inverse() const {
 unsigned FMStr::originalPos(unsigned index) const {
     int pos = sufArr[index];
     unsigned step = 0;
-    while (pos == -1) {                         // not found in sparse suffix array
-        index = checkpoint.l2f(chars[index]);   // find L(index) in F; that's F(index)'s predecessor
+    while (pos < 0) {                           // not found in sparse suffix array
+        index = checkpoint.l2f(index);          // find L(index) in F; that's F(index)'s predecessor
         pos = sufArr[index];                    // try with new position
         step++;
     }
 
-    return pos + step;
+    pos += step;
+    return pos > len ? pos - len : pos;
 }
 
 FMStr::~FMStr() {

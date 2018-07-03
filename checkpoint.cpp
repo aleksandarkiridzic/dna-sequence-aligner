@@ -61,14 +61,14 @@ Checkpoint::Checkpoint(const Str& str, unsigned step): str(str) {
 }
 
 Range Checkpoint::range(const Range& range, char ch) const {
-    if (ch2col[(byte)ch] == -1) { // no char in string
+    if (ch2col[(byte)ch] == -1) {               // no char in string
         throw NoCharInStrException(ch, str);
     }
-    if (range.low > str.len) {
+    if (range.low > str.len) {                  // including
         throw IndexOutOfBoundsException(range.low, str.len);
     }
-    if (range.high > str.len) {
-        throw IndexOutOfBoundsException(range.high, str.len);
+    if (range.high > str.len + 1) {             // excluding
+        throw IndexOutOfBoundsException(range.high, str.len + 1);
     }
 
     unsigned low, high;
@@ -82,21 +82,26 @@ Range Checkpoint::range(const Range& range, char ch) const {
         }
     }
 
-    if ((range.low >> logStep) == (range.low >> logStep)) {         // same segment
-        high = low + 1;                                             // start from where previously stopped
+    if (range.high > str.len) {                                     // border case - count all occurrences
+        high = limits[ch2col[(byte)ch] + 1] - limits[ch2col[(byte)ch]];
     }
     else {
-        high = table[range.high >> logStep][ch2col[(byte)ch]];      // different segment
-        it = range.high & ~sparseMask;                              // start from anew
-    }
+        if ((range.low >> logStep) == (range.high >> logStep)) {        // same segment
+            high = low + 1;                                             // start from where previously stopped
+        }
+        else {
+            high = table[range.high >> logStep][ch2col[(byte)ch]];      // different segment
+            it = range.high & ~sparseMask;                              // start from anew
+        }
 
-    while (it < range.high) {                                       // last one implicitly counted
-        if (str[it++] == ch) {
-            high++;
+        while (it < range.high) {                                       // last one implicitly counted
+            if (str[it++] == ch) {
+                high++;
+            }
         }
     }
 
-    return Range(limits[(byte)ch] + low, limits[(byte)ch] + high);
+    return Range(limits[ch2col[(byte)ch]] + low, limits[ch2col[(byte)ch]] + high);
 }
 
 Range Checkpoint::rangeAll(char ch) const {

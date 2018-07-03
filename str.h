@@ -3,6 +3,7 @@
 
 #include "general.h"
 #include <iostream>
+#include <cstring>
 
 // basic string structure holding characters and its length
 immutable_class Str {
@@ -11,9 +12,10 @@ protected:
     unsigned len = 0;
 public:
     Str(const char* src, unsigned len);
+    Str(std::string str): Str(str.c_str(), str.length()) {}
     ~Str() { /* destroy(); */ }         // must be destroyed explicitly
     const unsigned length() const { return len; }
-    const bool isEmpty() const { return chars; }
+    const bool isEmpty() const { return !chars; }
     const char& operator[](int i) const;
     Str subStr(unsigned from, unsigned siz) const;
     const char lastCharVisible() const;
