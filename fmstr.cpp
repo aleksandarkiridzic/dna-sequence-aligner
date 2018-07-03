@@ -2,6 +2,9 @@
 #include "strfact.h"
 #include "range.h"
 
+#include <sstream>
+#include <cstring>
+
 using namespace std;
 
 FMStr::FMStr(const Str& str, const SuffixArray& sufArr, const Checkpoint& checkpoint):
@@ -53,4 +56,69 @@ unsigned FMStr::originalPos(unsigned index) const {
     }
 
     return pos + step;
+}
+
+FMStr::~FMStr() {
+    sufArr.destroy();
+    checkpoint.destroy();
+    destroy();
+}
+
+void FMStr::pack() {
+    if (isPacked) {     // must not be packed
+        return;
+    }
+
+    char curCh = chars[0];
+    byte runLen = 1;
+    constexpr unsigned MAX_BYTE = TOTAL_CHARS - 1;
+    ostringstream oss;
+
+    for (unsigned i = 1; i <= len; i++) {
+        if (chars[i] == curCh && runLen < MAX_BYTE) {   // continue run up to 255 same chars
+            runLen++;
+        }
+        else {
+            oss.put(runLen).put(curCh);                 // print length and the character
+            curCh = chars[i];                           // start new run
+            runLen = 1;
+        }
+    }
+    oss.put(runLen).put(curCh);
+
+    string packed = oss.str();
+    len = packed.length() - 1;
+    char* dest = new char[len + 1];
+    memcpy(dest, packed.c_str(), (len + 1) * sizeof(char));
+    delete[] chars;
+    chars = dest;
+
+    isPacked = true;
+}
+
+void FMStr::unpack() {
+    if (!isPacked) {        // must be packed
+        return;
+    }
+
+    ostringstream oss;
+    for (unsigned i = 0; i <= len; i += 2) {
+        byte runLen = chars[i];
+        char ch = chars[i + 1];
+        oss << string(runLen, ch);
+    }
+
+    string unpacked = oss.str();
+    len = unpacked.length() - 1;
+    char* dest = new char[len + 1];
+    memcpy(dest, unpacked.c_str(), (len + 1) * sizeof(char));
+    delete[] chars;
+    chars = dest;
+
+    isPacked = false;
+}
+
+void FMStr::info() const {
+    cout << "suffix array\n" << sufArr << endl;
+    checkpoint.info();
 }

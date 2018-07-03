@@ -11,14 +11,14 @@ protected:
     unsigned len = 0;
 public:
     Str(const char* src, unsigned len);
-    ~Str() { destroy(); }
+    ~Str() { /* destroy(); */ }         // must be destroyed explicitly
     const unsigned length() const { return len; }
     const bool isEmpty() const { return chars; }
     const char& operator[](int i) const;
     Str subStr(unsigned from, unsigned siz) const;
     const char lastCharVisible() const;
-private:
-    void destroy();
+protected:
+    virtual void destroy();
 
     friend std::ostream& operator<<(std::ostream& os, const Str& str);
     friend class StrUtil;

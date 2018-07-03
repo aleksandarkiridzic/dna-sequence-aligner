@@ -7,7 +7,7 @@
 
 using namespace std;
 
-Checkpoint::Checkpoint(const Str& fmstr, unsigned step): str(str) {
+Checkpoint::Checkpoint(const Str& str, unsigned step): str(str) {
     if (step == 1) {        // not sparse
         logStep = 0;
         sparseMask = 0;
@@ -19,13 +19,14 @@ Checkpoint::Checkpoint(const Str& fmstr, unsigned step): str(str) {
 
     int* ch2colInit = new int[TOTAL_CHARS];
     unsigned* cnt = StrUtil::count(str);
+    activeChars = 0;
     for (unsigned i = 0, c = 0; i < TOTAL_CHARS; i++) {
         if (cnt[i]) {
             activeChars++;          // count distinct character in the string
             ch2colInit[i] = c++;    // assign a column
         }
         else {
-            ch2colInit[i] = -1;        // assign illegal value
+            ch2colInit[i] = -1;     // assign illegal value
         }
     }
     ch2col = ch2colInit;
@@ -47,12 +48,12 @@ Checkpoint::Checkpoint(const Str& fmstr, unsigned step): str(str) {
     for (unsigned i = 0; i < len; i++) {
         tableInit[i] = new unsigned[activeChars];
     }
-    for (unsigned c = 0; c < str.len; c++) {  // initialize first row
+    for (unsigned c = 0; c < activeChars; c++) {  // initialize first row
         tableInit[0][c] = 0;
     }
     for (unsigned i = 1; i < len; i++) {
-        memcpy(tableInit + i, tableInit + i - 1, activeChars * sizeof(unsigned));   // copy previous values
-        for (unsigned k = (i - 1) << logStep; k < i << logStep; k++) {              // increase for all occurrences
+        memcpy(tableInit[i], tableInit[i - 1], activeChars * sizeof(unsigned));       // copy values from previous checkpoint
+        for (unsigned k = ((i - 1) << logStep); k < (i << logStep); k++) {              // increase for all occurrences
             tableInit[i][ch2col[(byte)str[k]]]++;                                       // previous and current checkpoint
         }
     }
@@ -73,23 +74,23 @@ Range Checkpoint::range(const Range& range, char ch) const {
     unsigned low, high;
     unsigned it;
 
-    low = table[range.low >> logStep][ch2col[(byte)ch]];
+    low = table[range.low >> logStep][ch2col[(byte)ch]];            // last one implicitly counted
     it = range.low & ~sparseMask;
-    while (it <= range.low) {
+    while (it < range.low) {
         if (str[it++] == ch) {
             low++;
         }
     }
 
-    if ((range.low >> logStep) == (range.low >> logStep)) {     // same segment
-        high = low;                                             // start from where previously stopped
+    if ((range.low >> logStep) == (range.low >> logStep)) {         // same segment
+        high = low + 1;                                             // start from where previously stopped
     }
     else {
-        high = table[range.high >> logStep][ch2col[(byte)ch]];        // different segment
-        it = range.high & ~sparseMask;                          // start from anew
+        high = table[range.high >> logStep][ch2col[(byte)ch]];      // different segment
+        it = range.high & ~sparseMask;                              // start from anew
     }
 
-    while (it <= range.high) {
+    while (it < range.high) {                                       // last one implicitly counted
         if (str[it++] == ch) {
             high++;
         }
@@ -113,13 +114,13 @@ unsigned Checkpoint::l2f(unsigned index) const {
 
     unsigned res = table[index >> logStep][ch2col[(byte)str[index]]];
     unsigned it = index & ~sparseMask;
-    while (it <= index) {
+    while (it < index) {                    // last one implicitly counted
         if (str[it++] == str[index]) {
             res++;
         }
     }
 
-    return res;
+    return limits[ch2col[(byte)str[index]]] + res;
 }
 
 void Checkpoint::destroy() {
@@ -131,4 +132,19 @@ void Checkpoint::destroy() {
     ch2col = nullptr;
     delete[] limits;
     limits = nullptr;
+}
+
+void Checkpoint::info() const {
+    cout << "table\n";
+    for (unsigned i = 0; i < length(); i++) {
+        for (unsigned j = 0; j < activeChars; j++) {
+            cout << table[i][j] << " ";
+        }
+        cout << endl;
+    }
+    cout << "limits\n";
+    for (unsigned i = 0; i < activeChars; i++) {
+        cout << limits[i] << " ";
+    }
+    cout << endl;
 }

@@ -12,12 +12,12 @@ private:
     unsigned sparseMask;        // mask for checking if the value is held; step = sparseMask + 1
 public:
     SuffixArray(const Str& str, unsigned step = 1);
-    ~SuffixArray() { destroy(); }
+    ~SuffixArray() { /* destroy(); */ }     // destroyed by controlling FM string
     inline unsigned length() const { return (str.len >> logStep) + 1; }
     const int operator[](int i) const;
     SuffixArray sparse(unsigned step, bool keepOriginal = true);
-private:
     void destroy();
+private:
     SuffixArray(const Str& str, unsigned* arr, unsigned logStep, unsigned sparseMask):
         str(str), arr(arr), logStep(logStep), sparseMask(sparseMask) {}
 

@@ -51,7 +51,7 @@ const int SuffixArray::operator[](int i) const {
 }
 
 SuffixArray SuffixArray::sparse(unsigned step, bool keepOriginal) {
-    if (logStep) {      // already sparse
+    if (logStep || step == 1) {      // already sparse
         return *this;
     }
 

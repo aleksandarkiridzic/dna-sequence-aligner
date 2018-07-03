@@ -82,9 +82,14 @@ Str StrFact::bwt(Str& str, unsigned*& sufArr, bool keepOriginal) {
 }
 
 FMStr StrFact::constructFMStr(Str& str, unsigned sufArrStep, unsigned checkpointStep) {
-    SuffixArray sufArr(str, sufArrStep);
-    unsigned *arr = const_cast<unsigned*>(sufArr.arr);
+    SuffixArray fullSufArr(str);
+    unsigned *arr = const_cast<unsigned*>(fullSufArr.arr);
     Str bwtStr = bwt(str, arr, false);
+    SuffixArray sufArr = fullSufArr.sparse(sufArrStep, false);
+    /*{
+        cout << "debug" << endl;
+        cout << bwtStr << " of size " << bwtStr.length() << endl;
+    }*/
     Checkpoint checkpoint(bwtStr, checkpointStep);
 
     return FMStr(bwtStr, sufArr, checkpoint);
