@@ -23,9 +23,9 @@ int StrFact::constructSuffixArray(const Str& str, unsigned*& sufArr) {
 
     unsigned *sufRows = new unsigned[len];
     for (unsigned step = 2; step < len; step <<= 1) {   // each next step is doubled
-        unsigned newRankHigh = 0;                       // new rankHigh to assign based only on previous iteration ranks
+        unsigned newRankHigh = 1;                       // new rankHigh to assign based only on previous iteration ranks
         unsigned compRankHigh = suffixes[0].rankHigh;   // previous rankHigh used for comparison
-        suffixes[0].rankHigh = 0;                       // reset first suffix's rankHigh
+        suffixes[0].rankHigh = newRankHigh;                       // reset first suffix's rankHigh
         sufRows[suffixes[0].index] = 0;
 
         for (unsigned i = 1; i < len; i++) {                        // rankHigh updating based on previous iteration ranks

@@ -56,7 +56,7 @@ unsigned FMStr::originalPos(unsigned index) const {
     }
 
     pos += step;
-    return pos > len ? pos - len : pos;
+    return pos > len ? pos - len - 1 : pos;
 }
 
 FMStr::~FMStr() {

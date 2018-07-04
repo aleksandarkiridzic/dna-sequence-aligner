@@ -148,7 +148,7 @@ void Checkpoint::info() const {
         cout << endl;
     }
     cout << "limits\n";
-    for (unsigned i = 0; i < activeChars; i++) {
+    for (unsigned i = 0; i < activeChars + 1; i++) {
         cout << limits[i] << " ";
     }
     cout << endl;
