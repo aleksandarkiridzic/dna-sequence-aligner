@@ -67,4 +67,14 @@ struct ReadIllegalDefException : BetterException {
     }
 };
 
+struct SeedInvalidException : BetterException {
+    unsigned length, interval;
+    SeedInvalidException(unsigned length, unsigned interval) : length(length), interval(interval) {}
+    std::string message() override {
+        std::ostringstream output;
+        output << "Seed length (" << length << ") smaller than seed interval (" << interval << ").";
+        return output.str();
+    }
+};
+
 #endif // EXCEPTIONS_H_INCLUDED

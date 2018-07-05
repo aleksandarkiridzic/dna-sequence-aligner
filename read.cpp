@@ -12,8 +12,9 @@ Read::Read(const Str& ident, const Str& seq, const Str& qual) :
         }
 
         char* dest = new char[seq.length() + 1];
-        for (unsigned i = 0; i < seq.length(); i++) {
-            dest[i] = inverse[(byte)seq[i]];
+        for (unsigned i = 0, j = seq.length() - 1; i <= j; i++, j--) {
+            dest[i] = inverse[(byte)seq[j]];
+            dest[j] = inverse[(byte)seq[i]];
         }
         complement = Str(dest, seq.length());
     }

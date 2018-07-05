@@ -3,10 +3,11 @@
 
 #include "str.h"
 #include "strUtil.h"
+#include "general.h"
 
 #include <vector>
 
-class Read {
+immutable_class Read {
 private:
     const Str ident;
     const Str seq;
