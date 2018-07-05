@@ -12,10 +12,7 @@ private:
     enum ReaderState { ID, SEQ, PLUS, QUAL };
 public:
     static std::vector<Read> read(const char* filePath);
-/*private:
-    friend class StaticConstructor;
-    class StaticConstructor { StaticConstructor(); };
-    StaticConstructor StaticConstructor;*/
+
 };
 
 #endif // FASTQ_H_INCLUDED

@@ -23,11 +23,14 @@ vector<Read> Fastq::read(const char* filePath) {
     Str ident, seq, qual;
 
     while(getline(input, line)) {
-        lineCnt++;
+        /* cout << */ ++lineCnt /* << endl*/ ;
         if (!line.empty()) {                // skip empty lines
             switch (next) {
             case ID:
-                ident = Str(line);
+                if (line[0] != '@') {       // must start with a '@'
+                    throw ReadIllegalDefException(lineCnt);
+                }
+                ident = Str(line.c_str() + 1, line.length() - 1);
                 next = SEQ;
                 break;
             case SEQ:
@@ -35,7 +38,7 @@ vector<Read> Fastq::read(const char* filePath) {
                 next = PLUS;
                 break;
             case PLUS:
-                if (line[0] != '+') {
+                if (line[0] != '+') {       // must be '+'
                     throw ReadIllegalDefException(lineCnt);
                 }
                 next = QUAL;
