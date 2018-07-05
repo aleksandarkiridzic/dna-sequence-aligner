@@ -44,4 +44,27 @@ struct NoCharInStrException : BetterException {
     }
 };
 
+struct ReadIllegalQualLenException : BetterException {
+    const Str& ident;
+    unsigned seqLen, qualLen;
+    ReadIllegalQualLenException(const Str& ident, unsigned seqLen, unsigned qualLen) :
+        ident(ident), seqLen(seqLen), qualLen(qualLen) {}
+    std::string message() override {
+        std::ostringstream output;
+        output << "Read has different sequence length (" << seqLen << ") and quality length (" << qualLen <<
+            ") in read " << ident << ".";
+        return output.str();
+    }
+};
+
+struct ReadIllegalDefException : BetterException {
+    unsigned line;
+    ReadIllegalDefException(unsigned line) : line(line) {}
+    std::string message() override {
+        std::ostringstream output;
+        output << "Illegal read definition on line " << line << ".";
+        return output.str();
+    }
+};
+
 #endif // EXCEPTIONS_H_INCLUDED

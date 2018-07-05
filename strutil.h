@@ -16,6 +16,8 @@ public:
     static void histogram(const Str& str, std::ostream& os);
     // check of all chars are uppercase
     static bool areAllUpper(const Str& str);
+    // check of all chars are in some group of allowed characters
+    static bool areAllAllowed(const Str& str, char* allowed);
     // print char or its ascii if not printable
     static std::ostream& printChar(std::ostream& os, char c);
 };

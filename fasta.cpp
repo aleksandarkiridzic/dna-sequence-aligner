@@ -17,7 +17,7 @@ Str Fasta::read(const char* filePath) {
     string line;
     ostringstream iss;
     while(getline(input, line)) {
-        if (!line.empty() && line[0] != '>' && line[0] != ';') { // if not comments
+        if (!line.empty() && line[0] != '>' && line[0] != ';') { // if not empty or a comment
             iss << line;
         }
     }

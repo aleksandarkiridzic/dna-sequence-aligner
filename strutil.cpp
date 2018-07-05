@@ -34,8 +34,17 @@ void StrUtil::histogram(const Str& str, ostream& os) {
 }
 
 bool StrUtil::areAllUpper(const Str& str) {
-    for (unsigned i = 0; i <= str.len; i++) {
+    for (unsigned i = 0; i < str.len; i++) {
         if (str.chars[i] && !isupper(str.chars[i])) {
+            return false;
+        }
+    }
+    return true;
+}
+
+bool StrUtil::areAllAllowed(const Str& str, char* allowed) {
+    for (unsigned i = 0; i < str.len; i++) {
+        if (!allowed[(byte)str.chars[i]]) {
             return false;
         }
     }

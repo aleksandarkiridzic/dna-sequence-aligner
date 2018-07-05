@@ -11,6 +11,7 @@ protected:
     const char* chars = nullptr;
     unsigned len = 0;
 public:
+    Str() {}
     Str(const char* src, unsigned len);
     Str(std::string str): Str(str.c_str(), str.length()) {}
     ~Str() { /* destroy(); */ }         // must be destroyed explicitly
