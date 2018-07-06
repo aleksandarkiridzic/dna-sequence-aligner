@@ -77,4 +77,14 @@ struct SeedInvalidException : BetterException {
     }
 };
 
+struct WindowInvalidException : BetterException {
+    float windowSeedRatio;
+    WindowInvalidException(float windowSeedRatio) : windowSeedRatio(windowSeedRatio) {}
+    std::string message() override {
+        std::ostringstream output;
+        output << "Window:Seed ratio (" << windowSeedRatio << ") is smaller than 1.0.";
+        return output.str();
+    }
+};
+
 #endif // EXCEPTIONS_H_INCLUDED

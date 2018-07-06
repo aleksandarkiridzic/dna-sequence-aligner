@@ -22,7 +22,7 @@ public:
     inline unsigned length() const { return (str.len >> logStep) + 1; }
     void destroy();
 
-    void info() const;
+    void info(std::ostream& os) const;
 };
 
 #endif // CHECKPOINT_H_INCLUDED

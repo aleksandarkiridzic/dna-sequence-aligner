@@ -7,6 +7,7 @@
 #include "checkpoint.h"
 
 #include <vector>
+#include <iostream>
 
 immutable_class FMStr : public Str {
 private:
@@ -22,7 +23,7 @@ public:
     void pack();
     void unpack();
 
-    void info() const;
+    void info(std::ostream& os) const;
 private:
     unsigned originalPos(unsigned index) const;   // position of F(index) in the original index
 

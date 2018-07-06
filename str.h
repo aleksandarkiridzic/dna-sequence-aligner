@@ -14,7 +14,8 @@ public:
     Str() {}
     Str(const char* src, unsigned len);
     Str(std::string str): Str(str.c_str(), str.length()) {}
-    ~Str() { /* destroy(); */ }         // must be destroyed explicitly
+    Str(unsigned len, const char* ptr): chars(ptr), len(len) {}     // shallow copy
+    ~Str() { /* destroy(); */ }                                     // must be destroyed explicitly
     const unsigned length() const { return len; }
     const bool isEmpty() const { return !chars; }
     const char& operator[](int i) const;

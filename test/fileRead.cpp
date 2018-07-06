@@ -37,10 +37,10 @@ int fastqTest() {
     }
     return 0;
 }
-
+/*
 int main(int argc, char* args[]) {
     // fastaTest();
     Read::setAlphabet({'A', 'C', 'G', 'T'});
     fastqTest();
 }
-
+*/

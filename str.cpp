@@ -28,7 +28,7 @@ Str Str::subStr(unsigned from, unsigned siz) const {
     if (from + siz > len) {
         throw IndexOutOfBoundsException(from + siz, len);
     }
-    return Str(chars + from, siz);
+    return Str(siz, chars + from);
 }
 
 const char Str::lastCharVisible() const {
@@ -41,7 +41,7 @@ void Str::destroy() {
 }
 
 ostream& operator<<(ostream& os, const Str& str) {
-    for (unsigned i = 0; i <= str.len; i++) {
+    for (unsigned i = 0; i < str.len; i++) {
         os << str.chars[i];
     }
     return os;

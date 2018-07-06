@@ -20,6 +20,8 @@ private:
 public:
     static void setAlphabet(std::vector<char> alphabet);
 
+    friend class ReadMatch;
+
     void info() {
         StrUtil::sample(ident, 3, std::cout);
         StrUtil::sample(seq, 3, std::cout);

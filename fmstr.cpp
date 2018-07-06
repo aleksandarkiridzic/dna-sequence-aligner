@@ -119,7 +119,7 @@ void FMStr::unpack() {
     isPacked = false;
 }
 
-void FMStr::info() const {
-    cout << "suffix array\n" << sufArr << endl;
-    checkpoint.info();
+void FMStr::info(std::ostream& os) const {
+    os << "suffix array\n" << sufArr << endl;
+    checkpoint.info(os);
 }

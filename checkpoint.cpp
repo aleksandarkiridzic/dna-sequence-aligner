@@ -87,7 +87,7 @@ Range Checkpoint::range(const Range& range, char ch) const {
     }
     else {
         if ((range.low >> logStep) == (range.high >> logStep)) {        // same segment
-            high = low + 1;                                             // start from where previously stopped
+            high = low;                                                 // start from where previously stopped
         }
         else {
             high = table[range.high >> logStep][ch2col[(byte)ch]];      // different segment
@@ -139,17 +139,17 @@ void Checkpoint::destroy() {
     limits = nullptr;
 }
 
-void Checkpoint::info() const {
-    cout << "table\n";
+void Checkpoint::info(std::ostream& os) const {
+    os << "table\n";
     for (unsigned i = 0; i < length(); i++) {
         for (unsigned j = 0; j < activeChars; j++) {
-            cout << table[i][j] << " ";
+            os << table[i][j] << " ";
         }
-        cout << endl;
+        os << endl;
     }
-    cout << "limits\n";
+    os << "limits\n";
     for (unsigned i = 0; i < activeChars + 1; i++) {
-        cout << limits[i] << " ";
+        os << limits[i] << " ";
     }
-    cout << endl;
+    os << endl;
 }
