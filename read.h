@@ -11,7 +11,7 @@ immutable_class Read {
 private:
     const Str ident;
     const Str seq;
-    Str complement;
+    Str revComp;
     const Str qual;
 public:
     Read(const Str& ident, const Str& seq, const Str& qual);
@@ -25,7 +25,7 @@ public:
     void info() {
         StrUtil::sample(ident, 3, std::cout);
         StrUtil::sample(seq, 3, std::cout);
-        StrUtil::sample(complement, 3, std::cout);
+        StrUtil::sample(revComp, 3, std::cout);
         StrUtil::sample(qual, 3, std::cout);
     }
 };

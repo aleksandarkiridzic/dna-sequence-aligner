@@ -78,11 +78,11 @@ struct SeedInvalidException : BetterException {
 };
 
 struct WindowInvalidException : BetterException {
-    float windowSeedRatio;
-    WindowInvalidException(float windowSeedRatio) : windowSeedRatio(windowSeedRatio) {}
+    float windowReadRatio;
+    WindowInvalidException(float windowReadRatio) : windowReadRatio(windowReadRatio) {}
     std::string message() override {
         std::ostringstream output;
-        output << "Window:Seed ratio (" << windowSeedRatio << ") is smaller than 1.0.";
+        output << "Window:Read ratio (" << windowReadRatio << ") must be positive (preferred at least 0.5).";
         return output.str();
     }
 };

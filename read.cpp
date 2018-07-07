@@ -16,7 +16,7 @@ Read::Read(const Str& ident, const Str& seq, const Str& qual) :
             dest[i] = inverse[(byte)seq[j]];
             dest[j] = inverse[(byte)seq[i]];
         }
-        complement = Str(dest, seq.length());
+        revComp = Str(dest, seq.length());
     }
 
 void Read::setAlphabet(vector<char> alphabet) {
