@@ -6,7 +6,7 @@
 
 immutable_class Checkpoint {
 private:
-    const Str str;             // corresponding string
+    const Str str;              // corresponding string
     const unsigned** table;     // table[r][c] = number of occurrences of c in prefix str(r * 2 ^ logStep)
     const int* ch2col;          // ch2col[c] = column of table corresponding to c
     const unsigned* limits;     // limits[c] =

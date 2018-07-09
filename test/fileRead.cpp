@@ -1,13 +1,32 @@
 #include "../fasta.h"
 #include "../fastq.h"
+#include "../sim.h"
 #include "../exceptions.h"
-#include "../strutil.h"
+#include "../strfact.h"
 #include "../read.h"
+#include "../fmstr.h"
+#include "../strsimilarity.h"
 
 #include <iostream>
 #include <vector>
 
 using namespace::std;
+
+void readAndPack() {
+    try {
+        Str str = Fasta::read("C:\\Users\\Aleksandar\\Desktop\\genomics\\DNA Sequence Aligner\\data\\MT.fa");
+        cout << str << endl;
+        FMStr fmstr = StrFact::constructFMStr(str, 1, 1);
+        cout << fmstr << endl;
+        fmstr.pack();
+        cout << "packed = " << fmstr.length() << endl;
+        fmstr.unpack();
+        cout << "unpacked = " << fmstr.length() << endl;
+    }
+    catch (BetterException& be) {
+        cout << be.message();
+    }
+}
 
 int fastaTest() {
     try {
@@ -37,10 +56,25 @@ int fastqTest() {
     }
     return 0;
 }
+
+int simTest() {
+    try {
+        StrSimilarity strSim = Sim::read("C:\\Users\\Aleksandar\\Desktop\\genomics\\DNA Sequence Aligner\\data\\default.sim");
+        strSim.~StrSimilarity();
+    }
+    catch (BetterException& e) {
+        cout << e.message() << endl;
+    }
+    return 0;
+}
+
 /*
 int main(int argc, char* args[]) {
     // fastaTest();
-    Read::setAlphabet({'A', 'C', 'G', 'T'});
-    fastqTest();
-}
-*/
+    //Read::setAlphabet({'A', 'C', 'G', 'T'});
+    //fastqTest();
+    //readAndPack();
+    simTest();
+}*/
+
+

@@ -3,6 +3,7 @@
 #include "checkpoint.h"
 
 #include <algorithm>
+#include <sstream>
 
 using namespace std;
 
@@ -93,6 +94,44 @@ FMStr StrFact::constructFMStr(Str& str, unsigned sufArrStep, unsigned checkpoint
     Checkpoint checkpoint(bwtStr, checkpointStep);
 
     return FMStr(bwtStr, sufArr, checkpoint);
+}
+
+Str StrFact::rlEncode(Str& str, bool keepOriginal) {
+    char curCh = str.chars[0];
+    unsigned runLen = 1;
+    ostringstream oss;
+
+    for (unsigned i = 1; i < str.len; i++) {
+        if (str.chars[i] == curCh) {
+            runLen++;
+        }
+        else {
+            (oss << runLen).put(curCh);         // print length and the character
+            curCh = str.chars[i];                   // start new run
+            runLen = 1;
+        }
+    }
+    (oss << runLen).put(curCh);
+
+    if (!keepOriginal) {
+        str.destroy();
+    }
+
+    return Str(oss.str());
+}
+
+Str StrFact::inverse(Str& str, bool keepOriginal) {
+    char* dest = new char[str.len + 1];
+    for (unsigned i = 0; i < str.len; i++) {
+        dest[i] = str.chars[str.len - 1 - i];
+    }
+    dest[str.len] = str[str.len];
+
+    if (!keepOriginal) {
+        str.destroy();
+    }
+
+    return Str(dest, str.len);
 }
 
 // Suffix struct

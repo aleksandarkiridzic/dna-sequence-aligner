@@ -16,7 +16,10 @@ public:
     static Str bwt(Str& str, unsigned*& sufArr, bool keepOriginal = true);
     // create fully fm-indexed string
     static FMStr constructFMStr(Str& str, unsigned sufArrStep = 1, unsigned checkpointStep = 1);
-
+    // run-length encoding
+    static Str rlEncode(Str& str, bool keepOriginal = true);
+    // inverse
+    static Str inverse(Str& str, bool keepOriginal = true);
 private:
     struct Suffix {
         static unsigned genInd;

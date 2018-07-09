@@ -1,6 +1,8 @@
 #include "../str.h"
 #include "../strutil.h"
 #include "../strfact.h"
+#include "../strsimilarity.h"
+#include "../sim.h"
 
 #include <iostream>
 #include <cstring>
@@ -19,6 +21,21 @@ void constructSuffixArrayTest() {
     cout << endl;
 }
 
+void encodeAndInverseTest() {
+    //string test = "banana";
+    Str test("aaankcleeenkccc");
+    cout << StrFact::rlEncode(test) << endl << StrFact::inverse(test);
+}
+
+void strSimTest() {
+    //string test = "banana";
+    StrSimilarity strSim = Sim::read("C:\\Users\\Aleksandar\\Desktop\\genomics\\DNA Sequence Aligner\\data\\default.sim");
+    Str str("ACGTACGTGTATACTGAGCATCATGCATATACGACTGACGTACGAGACGTAGCTACGATCGATCGACTGACGATACGACGTAGCGACTGTACATCGATCGCATATG");
+    Str pat("ATCGTACACGACGTACGTATCTCAG");
+    StrSimMatch ssm = strSim.occurence(pat, str);
+    cout << ssm << endl;
+}
+
 void bwtTest() {
     string test = "ana voli milovana";
     // string test = "abracadabra";
@@ -31,8 +48,10 @@ void bwtTest() {
     }
     cout << endl;
 }
-/*
+
 int main(int argc, char* args[]) {
-    constructSuffixArrayTest();
+    //constructSuffixArrayTest();
     // bwtTest();
-}*/
+    // encodeAndInverseTest();
+    strSimTest();
+}
