@@ -49,5 +49,5 @@ StrSimilarity Sim::read(const char* filePath) {
 
     input.close();
 
-    return StrSimilarity(alphabet, const_cast<const int**>(table));
+    return StrSimilarity(alphabet, table);
 }

@@ -3,6 +3,7 @@
 
 #include "fmstr.h"
 #include "read.h"
+#include "strsimilarity.h"
 
 #include <vector>
 
@@ -50,6 +51,7 @@ public:
     void seed(const FMStr& refGenome, unsigned sl, unsigned si);
     void score();
     void rank(float windowReadRatio);
+    StrSimMatch extend(const Str& refGenome, const StrSimilarity& strSim, unsigned maxWindows);
 private:
     void score(std::vector<SeedMatch>& sms, std::vector<PosScore>& pss);                        //accumulate scores according to positions
     void calcWindows(std::vector<PosScore>& pss, std::vector<Window>& windows, bool isRevComp); // calculate all windows scores

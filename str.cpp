@@ -31,6 +31,16 @@ Str Str::subStr(unsigned from, unsigned siz) const {
     return Str(siz, chars + from);
 }
 
+Str Str::subStrCatch(unsigned from, unsigned siz) const {
+    if (from > len) {
+        throw IndexOutOfBoundsException(from, len);
+    }
+    if (from + siz > len) {
+        siz = len - from;
+    }
+    return Str(siz, chars + from);
+}
+
 const char Str::lastCharVisible() const {
     return isprint(chars[len]) ? chars[len] : '0';
 }
@@ -39,6 +49,8 @@ void Str::destroy() {
     delete[] chars;
     chars = nullptr;
 }
+
+Str Str::empty = Str("");
 
 ostream& operator<<(ostream& os, const Str& str) {
     for (unsigned i = 0; i < str.len; i++) {

@@ -112,7 +112,6 @@ void ReadMatch::rank(float windowReadRatio) {
         }
     }
 
-
     state = RANKED;
 }
 
@@ -129,4 +128,32 @@ void ReadMatch::calcWindows(std::vector<PosScore>& pss, std::vector<Window>& win
         windows.push_back(Window(isRevComp ? startPos | UNSIGNED_TOP_BIT : startPos, sumScore));
         sumScore -= (firstIn++)->score;
     }
+}
+
+StrSimMatch ReadMatch::extend(const Str& refGenome, const StrSimilarity& strSim, unsigned maxWindows) {
+    if (windows.empty()) {
+        return StrSimMatch(0, (int)UNSIGNED_TOP_BIT, Str::empty);
+    }
+
+    if (maxWindows > windows.size()) {
+        maxWindows = windows.size();
+    }
+
+    vector<StrSimMatch> matches;
+    for (unsigned i = 0; i < maxWindows; i++) {
+        StrSimMatch ssm = strSim.occurence(
+           windows[i].isRevComp() ? read.revComp : read.seq,
+           refGenome.subStrCatch(windows[i].realPos(), windowLength),
+           windows[i].realPos());
+        matches.push_back(ssm);
+    }
+
+    unsigned bestInd = 0;
+    for (unsigned i = 1; i < matches.size(); i++) {
+        if (matches[i].score > matches[bestInd].score) {
+            bestInd = i;
+        }
+    }
+
+    return matches[bestInd];
 }

@@ -30,8 +30,8 @@ void encodeAndInverseTest() {
 void strSimTest() {
     //string test = "banana";
     StrSimilarity strSim = Sim::read("C:\\Users\\Aleksandar\\Desktop\\genomics\\DNA Sequence Aligner\\data\\default.sim");
-    Str str("ACGTACGTGTATACTGAGCATCATGCATATACGACTGACGTACGAGACGTAGCTACGATCGATCGACTGACGATACGACGTAGCGACTGTACATCGATCGCATATG");
-    Str pat("ATCGTACACGACGTACGTATCTCAG");
+    Str str("AAAAACCCAAAAAA");
+    Str pat("GTCCCGT");
     StrSimMatch ssm = strSim.occurence(pat, str);
     cout << ssm << endl;
 }
@@ -48,10 +48,11 @@ void bwtTest() {
     }
     cout << endl;
 }
-
+/*
 int main(int argc, char* args[]) {
     //constructSuffixArrayTest();
     // bwtTest();
     // encodeAndInverseTest();
     strSimTest();
 }
+*/

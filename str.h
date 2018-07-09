@@ -20,7 +20,9 @@ public:
     const bool isEmpty() const { return !chars; }
     const char& operator[](int i) const;
     Str subStr(unsigned from, unsigned siz) const;
+    Str subStrCatch(unsigned from, unsigned siz) const;
     const char lastCharVisible() const;
+    static Str empty;
 protected:
     virtual void destroy();
 

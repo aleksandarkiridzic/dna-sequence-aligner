@@ -3,10 +3,11 @@
 
 #include <algorithm>
 #include <sstream>
+#include <string>
 
 using namespace std;
 
-StrSimilarity::StrSimilarity(vector<char> alphabet, const int** table): table(table), activeChars(alphabet.size()) {
+StrSimilarity::StrSimilarity(vector<char> alphabet, int** table): table(table), activeChars(alphabet.size()) {
     unsigned* ch2indInit = new unsigned[TOTAL_CHARS];
     fill_n(ch2indInit, TOTAL_CHARS, activeChars + 1);
     for (unsigned i = 0; i < alphabet.size(); i++) {
@@ -15,7 +16,36 @@ StrSimilarity::StrSimilarity(vector<char> alphabet, const int** table): table(ta
     ch2ind = ch2indInit;
 }
 
-StrSimMatch StrSimilarity::occurence(const Str& pat, const Str& str) {
+StrSimilarity StrSimilarity::defaulStrSim() {
+    unsigned activeChars = 4;
+
+    unsigned* ch2ind = new unsigned[TOTAL_CHARS];
+    fill_n(ch2ind, TOTAL_CHARS, activeChars + 1);
+    ch2ind['A'] = 0;
+    ch2ind['C'] = 1;
+    ch2ind['G'] = 2;
+    ch2ind['T'] = 3;
+
+    int** table = new int*[6];
+    table[0] = new int[6] { 1,       -4,     -2,     -4,     -7,     -10};
+    table[1] = new int[6] { -4,      1,      -4,     -2,     -7,     -10};
+    table[2] = new int[6] { -2,      -4,     1,      -4,     -7,     -10};
+    table[3] = new int[6] { -4,      -2,     -4,     1,      -7,     -10};
+    table[4] = new int[6] { -7,      -7,     -7,     -7,     -1000,  -1000};
+    table[5] = new int[6] { -10,     -10,    -10,    -10,    -1000,  -1000};
+
+    return StrSimilarity(table, ch2ind, activeChars);
+}
+
+void StrSimilarity::destroy() {
+    for (unsigned i = 0; i < activeChars + 2; i++) {
+        delete[] table[i];
+    }
+    delete[] table;
+    delete[] ch2ind;
+}
+
+StrSimMatch StrSimilarity::occurence(const Str& pat, const Str& str, unsigned basePos) const {
     unsigned rows = pat.length() + 1, cols = str.length() + 1;
     int** mem = new int*[rows];
     for (unsigned i = 0; i < rows; i++) {
@@ -79,7 +109,10 @@ StrSimMatch StrSimilarity::occurence(const Str& pat, const Str& str) {
         }
     }
 
-    Str invUnpacked = Str(oss.str());
+    string invEditTranscript = oss.str();   // deletions and mismatches on both ends are actually soft clips
+    for (unsigned i = 0; i < invEditTranscript.length() && (invEditTranscript[i] == 'D' || invEditTranscript[i] == 'X'); invEditTranscript[i++] = 'S');
+    for (unsigned i = invEditTranscript.length() - 1; i >= 0 && (invEditTranscript[i] == 'D' || invEditTranscript[i] == 'X'); invEditTranscript[i--] = 'S');
+    Str invUnpacked = Str(invEditTranscript);
     Str unpacked = StrFact::inverse(invUnpacked, false);
     Str cigar = StrFact::rlEncode(unpacked, false);
 
@@ -92,7 +125,7 @@ StrSimMatch StrSimilarity::occurence(const Str& pat, const Str& str) {
     }
     delete[] dir;
 
-    return StrSimMatch(leftEnd, score, cigar);
+    return StrSimMatch(basePos + leftEnd, score, cigar);
 }
 
 ostream& operator<<(std::ostream& os, const StrSimMatch& ssm) {
