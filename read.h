@@ -21,6 +21,7 @@ public:
     static void setAlphabet(std::vector<char> alphabet);
 
     friend class ReadMatch;
+    friend class Sam;
 
     void info() {
         StrUtil::sample(ident, 3, std::cout);

@@ -7,10 +7,11 @@
 #include <vector>
 
 immutable_struct StrSimMatch {
-    const int pos;
+    const unsigned pos;
     const int score;
     const Str cigar;
-    StrSimMatch(int pos, int score, const Str& cigar): pos(pos), score(score), cigar(cigar) {}
+    StrSimMatch(unsigned pos, int score, const Str& cigar): pos(pos), score(score), cigar(cigar) {}
+    inline bool isEmpty() const { return cigar.isEmpty(); }
 
     friend std::ostream& operator<<(std::ostream& os, const StrSimMatch& ssm);
 };

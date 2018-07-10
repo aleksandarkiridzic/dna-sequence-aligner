@@ -6,6 +6,7 @@
 #include "strsimilarity.h"
 
 #include <vector>
+#include <utility>
 
 class ReadMatch {
 private:
@@ -51,7 +52,8 @@ public:
     void seed(const FMStr& refGenome, unsigned sl, unsigned si);
     void score();
     void rank(float windowReadRatio);
-    StrSimMatch extend(const Str& refGenome, const StrSimilarity& strSim, unsigned maxWindows);
+    std::pair<StrSimMatch, bool> extend(const Str& refGenome, const StrSimilarity& strSim, unsigned maxWindows);
+    const Read& getRead() const { return read; }
 private:
     void score(std::vector<SeedMatch>& sms, std::vector<PosScore>& pss);                        //accumulate scores according to positions
     void calcWindows(std::vector<PosScore>& pss, std::vector<Window>& windows, bool isRevComp); // calculate all windows scores

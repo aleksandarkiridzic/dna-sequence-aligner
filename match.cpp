@@ -60,7 +60,7 @@ void ReadMatch::score() {
     sort(psFor.begin(), psFor.end());
     score(smRev, psRev);
     sort(psRev.begin(), psRev.end());
-
+/*
     {
         cout << "\n\nforward\n\n";
         for (auto const& ps: psFor) {
@@ -71,7 +71,7 @@ void ReadMatch::score() {
             cout << ps.pos << " " << ps.score << endl;
         }
     }
-
+*/
     state = SCORED;
 }
 
@@ -104,14 +104,14 @@ void ReadMatch::rank(float windowReadRatio) {
     calcWindows(psFor, windows, false);
     calcWindows(psRev, windows, true);
     sort(windows.begin(), windows.end());
-
+/*
     {
         cout << "\n\nwindows " << windowLength << "\n\n";
         for (auto const& window: windows) {
             cout << (window.isRevComp() ? "REV " : "FOR ") << window.realPos() << "\t\t" << window.score << endl;
         }
     }
-
+*/
     state = RANKED;
 }
 
@@ -130,9 +130,9 @@ void ReadMatch::calcWindows(std::vector<PosScore>& pss, std::vector<Window>& win
     }
 }
 
-StrSimMatch ReadMatch::extend(const Str& refGenome, const StrSimilarity& strSim, unsigned maxWindows) {
+std::pair<StrSimMatch, bool> ReadMatch::extend(const Str& refGenome, const StrSimilarity& strSim, unsigned maxWindows) {
     if (windows.empty()) {
-        return StrSimMatch(0, (int)UNSIGNED_TOP_BIT, Str::empty);
+        return pair<StrSimMatch, bool>(StrSimMatch(0, (int)UNSIGNED_TOP_BIT, Str::empty), true);
     }
 
     if (maxWindows > windows.size()) {
@@ -155,5 +155,5 @@ StrSimMatch ReadMatch::extend(const Str& refGenome, const StrSimilarity& strSim,
         }
     }
 
-    return matches[bestInd];
+    return pair<StrSimMatch, bool>(matches[bestInd], !windows[bestInd].isRevComp());
 }

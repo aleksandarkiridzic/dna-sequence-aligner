@@ -6,6 +6,7 @@
 
 #include <iostream>
 #include <cstring>
+#include <iomanip>
 
 using namespace::std;
 
@@ -36,6 +37,11 @@ void strSimTest() {
     cout << ssm << endl;
 }
 
+void strWriteTest() {
+    Str str("testtest");
+    cout << setw(20) << left << str << "dovde";
+}
+
 void bwtTest() {
     string test = "ana voli milovana";
     // string test = "abracadabra";
@@ -53,6 +59,7 @@ int main(int argc, char* args[]) {
     //constructSuffixArrayTest();
     // bwtTest();
     // encodeAndInverseTest();
-    strSimTest();
+    // strSimTest();
+    strWriteTest();
 }
 */

@@ -17,7 +17,7 @@ public:
     Str(unsigned len, const char* ptr): chars(ptr), len(len) {}     // shallow copy
     ~Str() { /* destroy(); */ }                                     // must be destroyed explicitly
     const unsigned length() const { return len; }
-    const bool isEmpty() const { return !chars; }
+    const bool isEmpty() const { return !chars || len == 0; }
     const char& operator[](int i) const;
     Str subStr(unsigned from, unsigned siz) const;
     Str subStrCatch(unsigned from, unsigned siz) const;
